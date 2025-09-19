@@ -22,3 +22,27 @@ If either is true, flips state["requires_escalation"] = True. Logs progress.
 
 ### create_legal_ticket_node(state) → state
 - Calls `create_legal_ticket(...)`, which can return a follow-up question needed to complete the ticket. Stores that in `state["current_follow_up"]`.
+
+### answer_follow_up_question_node(state) → state
+- If `current_follow_up` exists, it asks a **binary QA chain** (BINARY_QUESTION_CHAIN) by appending the follow-up prompt to the original notice message, gets a boolean answer, and records it in state["follow_ups"].
+
+
+## binary_questions.py
+### 1. Imports
+```python
+from langchain_openai import ChatOpenAI
+from langchain_core.prompts import ChatPromptTemplate
+from pydantic import BaseModel, Field
+```
+- `ChatOpenAI`: lets you call an OpenAI model (like GPT-4o mini).
+- `ChatPromptTemplate`: defines reusable prompt templates for LangChain.
+- `BaseModel, Field`: Pydantic models to validate and structure the output.
+
+### 2. BinaryAnswer class
+```python
+class BinaryAnswer(BaseModel):
+    is_true: bool = Field(
+        description="Whether the answer to the question is yes or no. True if yes otherwise False."
+    )
+
+```
