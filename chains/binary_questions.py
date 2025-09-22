@@ -1,7 +1,7 @@
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from pydantic import BaseModel, Field
-
+import os
 class BinaryAnswer(BaseModel):
     is_true: bool = Field(
         description="""Whether the answer to the question is yes or no.
@@ -22,7 +22,7 @@ binary_question_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-binary_question_model = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+binary_question_model = ChatOpenAI(model="gpt-4o-mini", temperature=0, api_key=os.getenv('OPENAI_API_KEY'))
 
 BINARY_QUESTION_CHAIN = (
     binary_question_prompt

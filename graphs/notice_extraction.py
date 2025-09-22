@@ -84,6 +84,7 @@ def send_escalation_email_node(state: GraphState) -> GraphState:
         escalation_emails=state["escalation_emails"],
     )
     return state
+
 def create_legal_ticket_node(state: GraphState) -> GraphState:
     """Node to create a legal ticket"""
     follow_up = create_legal_ticket(
@@ -92,6 +93,7 @@ def create_legal_ticket_node(state: GraphState) -> GraphState:
     )
     state["current_follow_up"] = follow_up
     return state
+
 def build_notice_extraction_graph():
     workflow = StateGraph(GraphState)
     workflow.add_node("parse_notice_message", parse_notice_message_node)
